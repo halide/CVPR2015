@@ -1,4 +1,4 @@
-package com.example.helloandroidcamera2;
+package com.example.hogcamera;
 
 import android.graphics.ImageFormat;
 import android.media.Image;

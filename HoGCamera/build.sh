@@ -34,6 +34,6 @@ cd ..
 pwd
 ${ANDROID_NDK_HOME}/ndk-build -C jni # NDK_LOG=1
 ant debug
-adb install -r bin/HelloAndroidCamera2-debug.apk
-adb shell am start com.example.helloandroidcamera2/com.example.helloandroidcamera2.CameraActivity
+adb install -r bin/Hogcamera-debug.apk
+adb shell am start com.example.hogcamera/com.example.hogcamera.CameraActivity
 adb logcat

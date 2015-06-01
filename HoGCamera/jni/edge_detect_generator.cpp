@@ -30,7 +30,7 @@ public:
         
         // Mapping from gradient to histogram bucket
         Func grad_bucket;
-        grad_bucket(x, y) = cast<int>(round((atan2(y, x) * B / M_PI))) % B;
+        grad_bucket(x, y) = cast<int>(round((atan2(y, x) * B / (float)M_PI))) % B;
         
         // Make a histogram of gradients per tile
         Func hog;

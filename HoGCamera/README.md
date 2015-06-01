@@ -1,9 +1,9 @@
-HelloAndroidCamera2 is a simple application which uses Halide to
-process images streamed from the Android camera2 API. It reads every
-frame into the CPU via an ImageReader and uses Halide to either blit
-the frame to the output surface (converting between YUV formats), or
-apply an edge detector on the luma channel. This example requires a
-phone or tablet that supports the camera2 API (Android API level 21 or
+HoGCamera is a simple application which uses Halide to process images
+streamed from the Android camera2 API. It reads every frame into the
+CPU via an ImageReader and uses Halide to either blit the frame to the
+output surface (converting between YUV formats), or apply an hog
+feature detector on the luma channel. This example requires a phone or
+tablet that supports the camera2 API (Android API level 21 or
 above). This sample has been tested on Nexus 5, Nexus 6 and Nexus 9.
 
 CAVEAT: This example uses the not-so-well-documented ANativeWindow C
@@ -40,7 +40,7 @@ in the PATH. (It should contain an executable ndk-build file.)
 The standalone SDK is desired. Once downloaded, the "android" program
 in the tools directory of the install will need to be run. It should
 bring up a UI allowing one to choose components to install.
-HelloAndroidCamera2 currently depends on the android-21 release.  Make
+HoGCamera currently depends on the android-21 release.  Make
 sure the tools directory is on one's PATH.
 
 *Apache Ant -- which can be downloaded here:
@@ -49,7 +49,7 @@ make sure the bin directory is on one's PATH.
 
 If everything is setup correctly, running the build.sh script in this
 directory, with the current directory set to here, whould build the
-HelloAndroidCamera2 apk and install it on a connected Android device.
+HoGCamera apk and install it on a connected Android device.
 
 Gradle
 ===
@@ -81,7 +81,7 @@ FAILURE: Build failed with an exception.
 Execution failed for task ':ndkBuild'.
 ...
   Output:
-    /private/tmp/7/halide/apps/HelloAndroidCamera2/jni/native.cpp:11:26: fatal error: deinterleave.h: No such file or directory
+    /private/tmp/7/halide/apps/HoGCamera/jni/native.cpp:11:26: fatal error: deinterleave.h: No such file or directory
      #include "deinterleave.h"
 
 ```
@@ -89,7 +89,7 @@ Execution failed for task ':ndkBuild'.
 Android Studio
 ===
 To load project into Android Studio use "File/Import Project..." in
-Android Studio and point to apps/HelloAndroidCamera2/build.gradle file.
+Android Studio and point to apps/HoGCamera/build.gradle file.
 
 You will have to edit automatically-generated local.properties file to add
 ndk.dir property so it points to your Android NDK installation as described

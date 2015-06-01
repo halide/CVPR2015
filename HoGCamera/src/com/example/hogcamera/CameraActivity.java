@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.helloandroidcamera2;
+package com.example.hogcamera;
 
 import android.app.Activity;
 import android.os.Bundle;

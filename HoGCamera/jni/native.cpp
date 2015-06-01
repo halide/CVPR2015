@@ -56,7 +56,7 @@ bool checkBufferSizesMatch(int srcWidth, int srcHeight,
 //
 // The src and dst buffers have the same width, height, and row stride.
 extern "C" {
-JNIEXPORT bool JNICALL Java_com_example_helloandroidcamera2_JNIUtils_blit(
+JNIEXPORT bool JNICALL Java_com_example_hogcamera_JNIUtils_blit(
     JNIEnv *env, jobject obj, jint srcWidth, jint srcHeight,
     jobject srcLumaByteBuffer, jint srcLumaRowStrideBytes,
     jobject srcChromaUByteBuffer, jobject srcChromaVByteBuffer,
@@ -233,7 +233,7 @@ JNIEXPORT bool JNICALL Java_com_example_helloandroidcamera2_JNIUtils_blit(
 
 // src luma must have an element stride of 1.
 extern "C" {
-JNIEXPORT bool JNICALL Java_com_example_helloandroidcamera2_JNIUtils_edgeDetect(
+JNIEXPORT bool JNICALL Java_com_example_hogcamera_JNIUtils_edgeDetect(
     JNIEnv *env, jobject obj, jint srcWidth, jint srcHeight,
     jobject srcLumaByteBuffer, jint srcLumaRowStrideBytes, jobject dstSurface) {
     uint8_t *srcLumaPtr = reinterpret_cast<uint8_t *>(

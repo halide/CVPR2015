@@ -13,7 +13,7 @@
 -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.helloandroidcamera2"
+    package="com.example.hogcamera"
     android:versionCode="1"
     android:versionName="1.0">
 
@@ -25,7 +25,7 @@
         android:icon="@drawable/ic_launcher"
         android:theme="@style/MaterialTheme">
 
-        <activity android:name="com.example.helloandroidcamera2.CameraActivity"
+        <activity android:name="com.example.hogcamera.CameraActivity"
                   android:label="@string/app_name"
                   android:screenOrientation="landscape">
             <intent-filter>
