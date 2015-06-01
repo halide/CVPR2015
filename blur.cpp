@@ -29,37 +29,36 @@ int main(int argc, char **argv) {
     
     Var x, y, c;
     Func kernel;
-    kernel(x) = exp(-x*x/(2*sigma*sigma));
+    kernel(x) = exp(-x*x/(2*sigma*sigma)) / (sqrtf(2*M_PI)*sigma);
 
     Func in_bounded = BoundaryConditions::repeat_edge(in);
-    
-    Func blur_x;
-    blur_x(x, y, c) = (kernel(0) * in_bounded(x, y, c) +
-                       kernel(1) * (in_bounded(x-1, y, c) +
-                                    in_bounded(x+1, y, c)) +
-                       kernel(2) * (in_bounded(x-2, y, c) +
-                                    in_bounded(x+2, y, c)) +
-                       kernel(3) * (in_bounded(x-3, y, c) +
-                                    in_bounded(x+3, y, c)));
 
     Func blur_y;
-    blur_y(x, y, c) = (kernel(0) * blur_x(x, y, c) +
-                       kernel(1) * (blur_x(x, y-1, c) +
-                                    blur_x(x, y+1, c)) +
-                       kernel(2) * (blur_x(x, y-2, c) +
-                                    blur_x(x, y+2, c)) +
-                       kernel(3) * (blur_x(x, y-3, c) +
-                                    blur_x(x, y+3, c)));
+    blur_y(x, y, c) = (kernel(0) * in_bounded(x, y, c) +
+                       kernel(1) * (in_bounded(x, y-1, c) +
+                                    in_bounded(x, y+1, c)) +
+                       kernel(2) * (in_bounded(x, y-2, c) +
+                                    in_bounded(x, y+2, c)) +
+                       kernel(3) * (in_bounded(x, y-3, c) +
+                                    in_bounded(x, y+3, c)));
+    
+    Func blur_x;
+    blur_x(x, y, c) = (kernel(0) * blur_y(x, y, c) +
+                       kernel(1) * (blur_y(x-1, y, c) +
+                                    blur_y(x+1, y, c)) +
+                       kernel(2) * (blur_y(x-2, y, c) +
+                                    blur_y(x+2, y, c)) +
+                       kernel(3) * (blur_y(x-3, y, c) +
+                                    blur_y(x+3, y, c)));
 
     // Schedule it.
     kernel.compute_root();
     Var tx, ty, xi, yi;    
-    blur_y.tile(x, y, tx, ty, xi, yi, 256, 64)
-        .vectorize(xi, 8).parallel(ty);
-    blur_x.compute_at(blur_y, tx).vectorize(x, 8);
+    blur_x.compute_root().vectorize(x, 8).parallel(y);
+    blur_y.compute_at(blur_x, y).vectorize(x, 8);
 
     // Print out pseudocode for the pipeline.
-    blur_y.compile_to_lowered_stmt("blur.html", {in}, HTML);
+    blur_x.compile_to_lowered_stmt("blur.html", {in}, HTML);
     
     // Benchmark the pipeline.
     Image<float> output(in.width(),
@@ -67,7 +66,7 @@ int main(int argc, char **argv) {
                         in.channels());
     for (int i = 0; i < 10; i++) {
         double t1 = current_time();
-        blur_y.realize(output);
+        blur_x.realize(output);
         double t2 = current_time();
         std::cout << "Time: " << (t2 - t1) << '\n';
     }
