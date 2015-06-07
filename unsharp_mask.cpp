@@ -59,16 +59,16 @@ int main(int argc, char **argv) {
     Func sharpen;
     sharpen(x, y) = 2 * gray(x, y) - blur_x(x, y);   
 
+    Func ratio;
+    ratio(x, y) = sharpen(x, y) / gray(x, y);
+    
     Func result;
-    result(x, y, c) = (sharpen(x, y) / gray(x, y)) * in(x, y, c);
+    result(x, y, c) = ratio(x, y) * in(x, y, c);
     
     // Schedule it.
-    kernel.compute_root();
-    result.compute_root().vectorize(x, 8).parallel(y).reorder(c, x, y).bound(c, 0, 3).unroll(c);
     blur_y.compute_at(result, y).vectorize(x, 8);
-    
-    // Print out pseudocode for the pipeline.
-    result.compile_to_lowered_stmt("unsharp_mask.html", {in}, HTML);
+    ratio.compute_at(result, y).vectorize(x, 8);
+    result.vectorize(x, 8).parallel(y).reorder(x, c, y);
     
     // Benchmark the pipeline.
     Image<float> output(in.width(),
@@ -104,8 +104,9 @@ int main(int argc, char **argv) {
             cv::Mat sharp = 2*gray - blurry;
 
             cv::Mat out_channels[3];
+            cv::Mat ratio = sharp/gray;
             for (int c = 0; c < 3; c++) {
-                out_channels[c] = channels[c].mul(sharp/gray);
+                out_channels[c] = channels[c].mul(ratio);
             }
             cv::merge(out_channels, 3, output_image);
 
