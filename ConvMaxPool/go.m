@@ -12,26 +12,28 @@ pool_size = 4;
 
 % Generate random data to use for testing.
 in = single(randn(rows, cols));
-filters = single(ones(filter_size, filter_size, filter_count));
-out = -inf(ceil(rows/pool_size), ceil(cols/pool_size), filter_count);
+filters = single(randn(filter_size, filter_size, filter_count));
+out = zeros(rows, cols, filter_count);
+%out = -inf(ceil(rows/pool_size), ceil(cols/pool_size), filter_count);
 
 tic;
 for c = 1:filter_count
     in_filter_c = conv2(in, filters(:,:,c), 'same'); 
     
-    for i = 1:pool_size
-        for j = 1:pool_size
-            out(:,:,c) = ...
-                max(out(:,:,c), in_filter_c(i : pool_size : end, j : pool_size : end));
-        end
-    end
+    out(:,:,c) = in_filter_c;
+    %for i = 1:pool_size
+    %    for j = 1:pool_size
+    %        out(:,:,c) = ...
+    %            max(out(:,:,c), in_filter_c(i : pool_size : end, j : pool_size : end));
+    %    end
+    %end
 end
 toc;
 
-out_halide = zeros(size(out), 'single');
+%out_halide = zeros(size(out), 'single');
 
-tic;
-ConvMaxPool(in, filters, pool_size, out_halide);
-toc;
+%tic;
+%ConvMaxPool(in, filters, pool_size, out_halide);
+%toc;
 
-max(max(max(abs(out - out_halide))))
+%max(max(max(abs(out - out_halide))))
