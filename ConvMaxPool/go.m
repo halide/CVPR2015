@@ -1,7 +1,7 @@
 % Add the path to the halide tools.
 addpath(fullfile(pwd, '..', 'halide', 'tools'));
 % Build the halide pipeline into a mex library.
-mex_halide('ConvMaxPool.cpp');
+%mex_halide('ConvMaxPool.cpp');
 
 % Some basic parameters of our filter bank and pooling.
 rows = 300*8;
