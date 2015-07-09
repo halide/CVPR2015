@@ -52,7 +52,6 @@ int main(int argc, char **argv) {
                                     blur_y(x+3, y, c)));
 
     // Schedule it.
-    kernel.compute_root();
     blur_x.compute_root().vectorize(x, 8).parallel(y);
     blur_y.compute_at(blur_x, y).vectorize(x, 8);
 
