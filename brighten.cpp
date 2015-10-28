@@ -14,18 +14,18 @@ using namespace Halide;
 #include <iostream>
 
 // Some support code for timing and loading/saving images
-#include "halide/tutorial/image_io.h"
+#include "halide/tools/halide_image_io.h"
 #include "halide/tutorial/clock.h"
 
 int main(int argc, char **argv) {
-    Image<float> in = load<float>("input.png");
+    Image<float> in = Tools::load_image("input.png");
 
     Func brighter;
     Var x, y, c;
     brighter(x, y, c) = pow(in(x, y, c), 0.8f);
 
     brighter.vectorize(x, 8).parallel(y);
-    
+
     Image<float> output(in.width(), in.height(), in.channels());
     for (int i = 0; i < 10; i++) {
         double t1 = current_time();
@@ -33,8 +33,8 @@ int main(int argc, char **argv) {
         double t2 = current_time();
         std::cout << "Time: " << (t2 - t1) << "\n";
     }
-    
-    save(output, "output.png");
-    
+
+    Tools::save_image(output, "output.png");
+
     return 0;
 }
